@@ -1,7 +1,6 @@
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useState } from "react";
-import { async } from "@firebase/util";
 
 export const CreateTodo = () => {
   const [Subject, setSubject] = useState("");
