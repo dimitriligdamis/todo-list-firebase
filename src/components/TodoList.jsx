@@ -9,10 +9,14 @@ export const TodoList = () => {
 
   const fetchPost = async () => {
     await getDocs(collection(db, "todos")).then((querySnapshot) => {
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
+      const newData = querySnapshot.docs
+        .map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }))
+        .sort((date1, date2) =>
+          date1.date < date2.date ? 1 : date1.date > date2.date ? -1 : 0
+        );
       setTodos(newData);
       console.log(todos, newData);
     });
