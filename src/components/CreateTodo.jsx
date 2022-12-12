@@ -2,7 +2,7 @@ import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useState } from "react";
 
-export const CreateTodo = () => {
+export const CreateTodo = ({ reRender, setReRender }) => {
   const [Subject, setSubject] = useState("");
 
   const handleSubmit = async (e) => {
@@ -12,8 +12,10 @@ export const CreateTodo = () => {
       await addDoc(collection(db, "todos"), {
         Subject,
         completed: false,
+        date: Date.now(),
       });
       setSubject("");
+      setReRender(!reRender);
     }
   };
   return (

@@ -1,6 +1,6 @@
 export const TodoSubject = () => {
   return (
-    <div className="Subject">
+    <div>
       <h1>Todo Application</h1>
     </div>
   );
