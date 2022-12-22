@@ -3,7 +3,7 @@ import { TodoSubject } from "./components/TodoSubject";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <TodoSubject />
       <TodoList />
     </div>
