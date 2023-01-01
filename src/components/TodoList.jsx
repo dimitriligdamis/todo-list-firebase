@@ -26,13 +26,13 @@ export const TodoList = () => {
   }, [reRender]);
 
   return (
-    <>
+    <div>
       <CreateTodo reRender={reRender} setReRender={setReRender} />
       <ul>
         {todos?.map((todo) => (
           <li key={todo.id}>{todo.Subject}</li>
         ))}
       </ul>
-    </>
+    </div>
   );
 };
