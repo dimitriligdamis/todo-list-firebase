@@ -26,11 +26,13 @@ export const TodoList = () => {
   }, [reRender]);
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <CreateTodo reRender={reRender} setReRender={setReRender} />
-      <ul>
+      <ul className="w-3/4">
         {todos?.map((todo) => (
-          <li key={todo.id}>{todo.Subject}</li>
+          <li className="font-bold rounded my-4 p-3 bg-white" key={todo.id}>
+            {todo.Subject}
+          </li>
         ))}
       </ul>
     </div>
