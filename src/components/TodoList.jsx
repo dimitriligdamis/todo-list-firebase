@@ -1,10 +1,13 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { CreateTodo } from "./CreateTodo";
+
+// import icon check / edit / delete
 import { MdEdit } from "react-icons/md";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { IoMdTrash } from "react-icons/io";
+import { async } from "@firebase/util";
 
 export const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -21,12 +24,23 @@ export const TodoList = () => {
           date1.date < date2.date ? 1 : date1.date > date2.date ? -1 : 0
         );
       setTodos(newData);
-      console.log(todos, newData);
     });
   };
   useEffect(() => {
     fetchPost();
   }, [reRender]);
+
+  const handleClickCheckIn = async (item) => {
+    try {
+      await setDoc(doc(db, "todos", item.id), {
+        ...item,
+        completed: !item.completed,
+      });
+      setReRender(!reRender);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -37,11 +51,18 @@ export const TodoList = () => {
             className="flex justify-between font-bold rounded my-4 p-3 bg-white"
             key={todo.id}
           >
-            <p className="text-lg">{todo.Subject}</p>
+            <p className={todo.completed ? "line-through text-lg" : "text-lg"}>
+              {todo.Subject}
+            </p>
             <div className="flex items-center gap-5 text-2xl">
-              <BsFillCheckCircleFill className="text-[#5EFE9D]" />
-              <MdEdit className="text-[#10DDF3]" />
-              <IoMdTrash className="text-[#EE5557]" />
+              <BsFillCheckCircleFill
+                className="text-[#5EFE9D] hover:cursor-pointer"
+                onClick={() => {
+                  handleClickCheckIn(todo);
+                }}
+              />
+              <MdEdit className="text-[#10DDF3] hover:cursor-pointer" />
+              <IoMdTrash className="text-[#EE5557] hover:cursor-pointer" />
             </div>
           </li>
         ))}
