@@ -35,10 +35,19 @@ export const TodoList = () => {
 
   const handleClickCheckIn = async (item) => {
     try {
-      await setDoc(doc(db, "todos", item.id), {
+      const newItem = {
         ...item,
         completed: !item.completed,
+      };
+      await setDoc(doc(db, "todos", item.id), newItem);
+
+      const newArrayTodos = todos.map((obj) => {
+        if (obj.id == item.id) {
+          return newItem;
+        }
+        return obj;
       });
+      setTodos(newArrayTodos);
     } catch (error) {
       alert(error);
     }
