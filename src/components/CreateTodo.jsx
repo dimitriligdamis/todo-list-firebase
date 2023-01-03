@@ -1,9 +1,17 @@
 import { db } from "../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc } from "firebase/firestore";
 import { useState } from "react";
 
-export const CreateTodo = ({ list, setList }) => {
+export const CreateTodo = ({ list, setList, fetchPost }) => {
   const [subject, setSubject] = useState("");
+
+  const incrementId = (array) => {
+    if (!array.length) {
+      return 1;
+    }
+
+    return Math.max(...(array.map((obj) => obj.id) + 1));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +24,9 @@ export const CreateTodo = ({ list, setList }) => {
       };
       await addDoc(collection(db, "todos"), newSubject);
       setList([newSubject, ...list]);
+
+      // Obliger de fetch pour recup l'id auto de firebase
+      fetchPost();
 
       setSubject("");
     }

@@ -34,6 +34,7 @@ export const TodoList = () => {
   }, []);
 
   const handleClickCheckIn = async (item) => {
+    console.log(item);
     try {
       const newItem = {
         ...item,
@@ -55,17 +56,17 @@ export const TodoList = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <CreateTodo list={todos} setList={setTodos} />
+      <CreateTodo list={todos} setList={setTodos} fetchPost={fetchPost} />
       <ul className="w-3/4">
         {todos?.map((todo) => (
           <li
             className="flex justify-between font-bold rounded my-4 p-3 bg-white"
-            key={todo.id}
+            key={todo.date}
           >
             <p className={todo.completed ? "line-through text-lg" : "text-lg"}>
               {todo.subject}
             </p>
-            <div className="flex items-center gap-5 text-2xl">
+            <div className="flex items-center sm:gap-5 text-2xl">
               <BsFillCheckCircleFill
                 className="text-[#5EFE9D] hover:cursor-pointer"
                 onClick={() => {
