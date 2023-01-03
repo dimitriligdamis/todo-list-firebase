@@ -11,24 +11,27 @@ import { async } from "@firebase/util";
 
 export const TodoList = () => {
   const [todos, setTodos] = useState([]);
-  const [reRender, setReRender] = useState(false);
 
   const fetchPost = async () => {
-    await getDocs(collection(db, "todos")).then((querySnapshot) => {
-      const newData = querySnapshot.docs
-        .map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }))
-        .sort((date1, date2) =>
-          date1.date < date2.date ? 1 : date1.date > date2.date ? -1 : 0
-        );
-      setTodos(newData);
-    });
+    try {
+      await getDocs(collection(db, "todos")).then((querySnapshot) => {
+        const newData = querySnapshot.docs
+          .map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }))
+          .sort((date1, date2) =>
+            date1.date < date2.date ? 1 : date1.date > date2.date ? -1 : 0
+          );
+        setTodos(newData);
+      });
+    } catch (error) {
+      alert(error);
+    }
   };
   useEffect(() => {
     fetchPost();
-  }, [reRender]);
+  }, []);
 
   const handleClickCheckIn = async (item) => {
     try {
@@ -36,15 +39,14 @@ export const TodoList = () => {
         ...item,
         completed: !item.completed,
       });
-      setReRender(!reRender);
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   };
 
   return (
     <div className="flex flex-col items-center">
-      <CreateTodo reRender={reRender} setReRender={setReRender} />
+      <CreateTodo list={todos} setList={setTodos} />
       <ul className="w-3/4">
         {todos?.map((todo) => (
           <li
@@ -52,7 +54,7 @@ export const TodoList = () => {
             key={todo.id}
           >
             <p className={todo.completed ? "line-through text-lg" : "text-lg"}>
-              {todo.Subject}
+              {todo.subject}
             </p>
             <div className="flex items-center gap-5 text-2xl">
               <BsFillCheckCircleFill
