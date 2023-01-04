@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
-const ModalEdit = ({ setShowModal, currentValue, setCurrentValue }) => {
+const ModalEdit = ({
+  setShowModal,
+  currentValue,
+  setCurrentValue,
+  onClick,
+}) => {
   return (
     <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
       <div className="relative w-auto my-6 mx-auto max-w-3xl">
@@ -12,6 +17,7 @@ const ModalEdit = ({ setShowModal, currentValue, setCurrentValue }) => {
               placeholder="What do want to do?"
               value={currentValue}
               onChange={(e) => setCurrentValue(e.target.value)}
+              autoFocus
             />
             <button
               className="bg-transparent border-0 text-black float-right"
@@ -30,7 +36,7 @@ const ModalEdit = ({ setShowModal, currentValue, setCurrentValue }) => {
             <button
               className="text-white bg-yellow-500 active:bg-yellow-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
               type="button"
-              onClick={() => setShowModal(false)}
+              onClick={onClick}
             >
               Submit
             </button>

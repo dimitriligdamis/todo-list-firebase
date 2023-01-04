@@ -20,6 +20,7 @@ export const TodoList = () => {
   const [todos, setTodos] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentValue, setCurrentValue] = useState("");
+  const [currentItem, setCurrentItem] = useState({});
 
   const fetchPost = async () => {
     try {
@@ -62,9 +63,33 @@ export const TodoList = () => {
     }
   };
 
-  const handleClickEdit = async (item) => {
+  const handleClickEdit = (item) => {
     setCurrentValue(item.subject);
+    setCurrentItem(item);
     setShowModal(true);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const newItem = {
+        ...currentItem,
+        subject: currentValue,
+      };
+      await setDoc(doc(db, "todos", currentItem.id), newItem);
+
+      const newArrayTodos = todos.map((obj) => {
+        if (obj.id == currentItem.id) {
+          return newItem;
+        }
+        return obj;
+      });
+      setTodos(newArrayTodos);
+      setCurrentItem({});
+      setCurrentValue("");
+      setShowModal(false);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   const handleClickDelete = async (item) => {
@@ -118,6 +143,7 @@ export const TodoList = () => {
           currentValue={currentValue}
           setCurrentValue={setCurrentValue}
           setShowModal={setShowModal}
+          onClick={handleSubmit}
         />
       ) : null}
     </div>
