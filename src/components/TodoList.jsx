@@ -14,9 +14,12 @@ import { MdEdit } from "react-icons/md";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { IoMdTrash } from "react-icons/io";
 import { async } from "@firebase/util";
+import ModalEdit from "./ModalEdit";
 
 export const TodoList = () => {
   const [todos, setTodos] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [currentValue, setCurrentValue] = useState("");
 
   const fetchPost = async () => {
     try {
@@ -59,6 +62,11 @@ export const TodoList = () => {
     }
   };
 
+  const handleClickEdit = async (item) => {
+    setCurrentValue(item.subject);
+    setShowModal(true);
+  };
+
   const handleClickDelete = async (item) => {
     try {
       await deleteDoc(doc(db, "todos", item.id));
@@ -89,7 +97,12 @@ export const TodoList = () => {
                   handleClickCheckIn(todo);
                 }}
               />
-              <MdEdit className="text-[#10DDF3] hover:cursor-pointer" />
+              <MdEdit
+                className="text-[#10DDF3] hover:cursor-pointer"
+                onClick={() => {
+                  handleClickEdit(todo);
+                }}
+              />
               <IoMdTrash
                 className="text-[#EE5557] hover:cursor-pointer"
                 onClick={() => {
@@ -100,6 +113,13 @@ export const TodoList = () => {
           </li>
         ))}
       </ul>
+      {showModal ? (
+        <ModalEdit
+          currentValue={currentValue}
+          setCurrentValue={setCurrentValue}
+          setShowModal={setShowModal}
+        />
+      ) : null}
     </div>
   );
 };
