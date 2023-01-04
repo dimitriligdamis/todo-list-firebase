@@ -1,4 +1,10 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { CreateTodo } from "./CreateTodo";
@@ -34,7 +40,6 @@ export const TodoList = () => {
   }, []);
 
   const handleClickCheckIn = async (item) => {
-    console.log(item);
     try {
       const newItem = {
         ...item,
@@ -48,6 +53,17 @@ export const TodoList = () => {
         }
         return obj;
       });
+      setTodos(newArrayTodos);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const handleClickDelete = async (item) => {
+    try {
+      await deleteDoc(doc(db, "todos", item.id));
+
+      const newArrayTodos = todos.filter((obj) => obj.id !== item.id);
       setTodos(newArrayTodos);
     } catch (error) {
       alert(error);
@@ -74,7 +90,12 @@ export const TodoList = () => {
                 }}
               />
               <MdEdit className="text-[#10DDF3] hover:cursor-pointer" />
-              <IoMdTrash className="text-[#EE5557] hover:cursor-pointer" />
+              <IoMdTrash
+                className="text-[#EE5557] hover:cursor-pointer"
+                onClick={() => {
+                  handleClickDelete(todo);
+                }}
+              />
             </div>
           </li>
         ))}
