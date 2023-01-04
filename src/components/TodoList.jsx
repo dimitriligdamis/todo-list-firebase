@@ -112,7 +112,13 @@ export const TodoList = () => {
             className="flex justify-between font-bold rounded my-4 p-3 bg-white"
             key={todo.date}
           >
-            <p className={todo.completed ? "line-through text-lg" : "text-lg"}>
+            <p
+              className={
+                todo.completed
+                  ? "line-through decoration-red-500 decoration-4 text-lg"
+                  : "text-lg"
+              }
+            >
               {todo.subject}
             </p>
             <div className="flex items-center sm:gap-5 text-2xl">
