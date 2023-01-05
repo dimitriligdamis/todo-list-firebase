@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 const ModalEdit = ({
   setShowModal,
@@ -45,6 +46,13 @@ const ModalEdit = ({
       </div>
     </div>
   );
+};
+
+ModalEdit.propTypes = {
+  setShowModal: PropTypes.func,
+  currentValue: PropTypes.string,
+  setCurrentValue: PropTypes.func,
+  onClick: PropTypes.func,
 };
 
 export default ModalEdit;

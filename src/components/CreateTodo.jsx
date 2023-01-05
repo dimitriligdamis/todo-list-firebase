@@ -1,5 +1,7 @@
+import PropTypes from "prop-types";
 import { db } from "../Firebase";
 import { collection, addDoc, doc } from "firebase/firestore";
+
 import { useState } from "react";
 
 export const CreateTodo = ({ list, setList, fetchPost }) => {
@@ -48,4 +50,10 @@ export const CreateTodo = ({ list, setList, fetchPost }) => {
       </button>
     </form>
   );
+};
+
+CreateTodo.propTypes = {
+  list: PropTypes.array,
+  setList: PropTypes.func,
+  fetchPost: PropTypes.func,
 };
